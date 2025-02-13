@@ -19,7 +19,7 @@ export class CreateCardDto {
 
     @IsString()
     @MinLength(1)
-    rarity: string;
+    rarity?: string;
 
     @IsString()
     @MinLength(1)

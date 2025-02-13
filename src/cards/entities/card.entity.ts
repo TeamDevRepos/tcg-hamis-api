@@ -13,11 +13,11 @@ export class Card extends Document {
     @Prop({type: [String]})
     descs: string[];
     
-    @Prop()
-    rarity: string;
+    @Prop({default: 'N'})
+    rarity?: string;
 
     @Prop()
     image_url: string;
 }
 
-export const CardSchema = SchemaFactory.createForClass(Card)
+export const CardSchema = SchemaFactory.createForClass(Card);
