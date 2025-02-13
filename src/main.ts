@@ -12,11 +12,11 @@ async function bootstrap() {
       forbidNonWhitelisted: true,
       transform: true,
       transformOptions: {
-        enableImplicitConversion: true
-      }
-    })
-   );
-   const port = process.env.PORT || 3000; // Render asigna un puerto automáticamente
+        enableImplicitConversion: true,
+      },
+    }),
+  );
+  const port = process.env.PORT || 3000; // Render asigna un puerto automáticamente
   await app.listen(port, '0.0.0.0');
 }
 bootstrap();
