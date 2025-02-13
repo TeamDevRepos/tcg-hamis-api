@@ -3,6 +3,7 @@ import { CardsModule } from './cards/cards.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { MongooseModule } from '@nestjs/mongoose';
+import { BoxesModule } from './boxes/boxes.module';
 
 @Module({
   imports: [
@@ -11,6 +12,7 @@ import { MongooseModule } from '@nestjs/mongoose';
     }),
     MongooseModule.forRoot('mongodb://localhost:27017/tcg-hamis-db'),
     CardsModule,
+    BoxesModule,
   ],
 })
 export class AppModule {}

@@ -79,7 +79,7 @@ export class CardsService {
     const deletedCard = await this.cardModel.findOneAndDelete({ code }).exec();
     if (!deletedCard)
       throw new NotFoundException(`Card with ID ${code} not found`);
-    return { mensaje: 'Post eliminado', deletedCard };
+    return { mensaje: 'Card removed', deletedCard };
   }
 
   private handleExceptions(error: any) {
