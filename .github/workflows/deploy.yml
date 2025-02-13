@@ -12,20 +12,26 @@ jobs:
       - name: 📥 Checkout repo
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0  # Necesario para tags y releases
+          fetch-depth: 0  # Necesario para que semantic-release acceda a los tags
+
+      - name: ⚡ Configurar usuario de Git
+        run: |
+          git config --global user.email "github-actions@github.com"
+          git config --global user.name "github-actions"
 
       - name: ⚡ Install Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 20.8.1
+          node-version: 18
 
       - name: 📦 Install dependencies
-        run: yarn
+        run: npm install
 
       - name: 🚀 Run Semantic Release
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         run: npx semantic-release
+
 
   deploy:
     needs: release
