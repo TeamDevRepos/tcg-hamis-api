@@ -8,9 +8,10 @@ import { CreateCardDto } from './dto/create-card.dto';
 import { UpdateCardDto } from './dto/update-card.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Card } from './entities/card.entity';
-import { Model } from 'mongoose';
+import { Model, Schema } from 'mongoose';
 import { AddCardsDto } from './dto/add-cards.dto';
 import axios, { AxiosInstance } from 'axios';
+import { Box } from 'src/boxes/entities/box.entity';
 
 @Injectable()
 export class CardsService {
@@ -19,6 +20,8 @@ export class CardsService {
   constructor(
     @InjectModel(Card.name)
     private readonly cardModel: Model<Card>,
+    @InjectModel(Box.name)
+    private readonly boxModel: Model<Box>,
   ) {}
 
   async findAll() {
@@ -33,7 +36,18 @@ export class CardsService {
 
   async create(createCardDto: CreateCardDto) {
     try {
+      const box = await this.boxModel.findById(createCardDto.boxId);
+      if (!box) {
+        throw new NotFoundException('Box not found');
+      }
+
       const card = await this.cardModel.create(createCardDto);
+
+      const cardId = card._id as Schema.Types.ObjectId;
+
+      box.cards.push(cardId);
+      await box.save();
+
       return card;
     } catch (error) {
       this.handleExceptions(error);
@@ -41,14 +55,20 @@ export class CardsService {
   }
 
   async addCards(addCardsDto: AddCardsDto) {
-    const { cardCodes } = addCardsDto;
+    const { cardCodes, boxId } = addCardsDto;
 
     try {
-      const cards = await Promise.all(
+      const box = await this.boxModel.findById(boxId);
+      if (!box) {
+        throw new NotFoundException('Box not found');
+      }
+
+      const cardsData = await Promise.all(
         cardCodes.map(async (code) => {
           const { data } = await this.axios.get(
             `https://db.ygoprodeck.com/api/v7/cardinfo.php?id=${code}`,
           );
+
           return {
             code: data.data[0].id,
             names: [data.data[0].name],
@@ -58,9 +78,16 @@ export class CardsService {
         }),
       );
 
-      await this.cardModel.insertMany(cards);
+      const createdCards = await this.cardModel.insertMany(cardsData);
 
-      return cards;
+      const cardIds = createdCards.map(
+        (card) => card._id as Schema.Types.ObjectId,
+      );
+
+      box.cards.push(...cardIds);
+      await box.save();
+
+      return createdCards;
     } catch (error) {
       this.handleExceptions(error);
     }

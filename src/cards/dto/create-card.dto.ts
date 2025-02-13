@@ -24,4 +24,9 @@ export class CreateCardDto {
     @IsString()
     @MinLength(1)
     image_url: string;
+    
+    @IsString()
+    @MinLength(1)
+    boxId: string;
+
 }

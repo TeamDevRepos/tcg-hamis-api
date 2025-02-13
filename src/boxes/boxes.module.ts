@@ -14,6 +14,7 @@ import { Box, BoxSchema } from './entities/box.entity';
           schema: BoxSchema
         }
       ])
-    ]
+    ],
+    exports: [MongooseModule]
 })
 export class BoxesModule {}

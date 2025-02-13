@@ -18,6 +18,9 @@ export class Card extends Document {
 
     @Prop()
     image_url: string;
+
+    @Prop({default: false})
+    topBoxCard: boolean;
 }
 
 export const CardSchema = SchemaFactory.createForClass(Card);
