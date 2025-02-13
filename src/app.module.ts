@@ -10,7 +10,7 @@ import { BoxesModule } from './boxes/boxes.module';
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'public'),
     }),
-    MongooseModule.forRoot('mongodb://localhost:27017/tcg-hamis-db'),
+    MongooseModule.forRoot('mongodb+srv://diegodevcg:VxkEBzrMDncBTtqG@tcg-hamis-api.4ddca.mongodb.net/tcg-hamis-db'),
     CardsModule,
     BoxesModule,
   ],
