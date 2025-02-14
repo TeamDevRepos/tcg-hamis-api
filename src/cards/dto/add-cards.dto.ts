@@ -1,4 +1,4 @@
-import { ArrayMinSize, IsArray, IsString, MinLength } from 'class-validator';
+import { ArrayMinSize, IsArray, IsOptional, IsString, MinLength } from 'class-validator';
 
 export class AddCardsDto {
   @IsArray()
@@ -9,4 +9,9 @@ export class AddCardsDto {
   @IsString()
   @MinLength(1)
   boxId: string;
+
+  @IsOptional()
+  @IsString()
+  @MinLength(1)
+  rarity?: string;
 }

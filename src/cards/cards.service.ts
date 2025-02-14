@@ -55,7 +55,7 @@ export class CardsService {
   }
 
   async addCards(addCardsDto: AddCardsDto) {
-    const { cardCodes, boxId } = addCardsDto;
+    const { cardCodes, boxId, rarity } = addCardsDto;
 
     try {
       const box = await this.boxModel.findById(boxId);
@@ -74,6 +74,7 @@ export class CardsService {
             names: [data.data[0].name],
             descs: [data.data[0].desc],
             image_url: data.data[0].card_images[0].image_url,
+            rarity
           };
         }),
       );
