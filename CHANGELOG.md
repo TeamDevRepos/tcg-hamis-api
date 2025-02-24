@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/TeamDevRepos/tcg-hamis-api/compare/v1.1.0...v1.1.1) (2025-02-24)
+
+
+### Bug Fixes
+
+* env production variable ([de5e8ee](https://github.com/TeamDevRepos/tcg-hamis-api/commit/de5e8ee65a5179bbc8cf72478503898b4a6e3044))
+
 # [1.1.0](https://github.com/TeamDevRepos/tcg-hamis-api/compare/v1.0.0...v1.1.0) (2025-02-24)
 
 
