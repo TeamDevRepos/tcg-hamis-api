@@ -1,3 +1,11 @@
+# [1.1.0](https://github.com/TeamDevRepos/tcg-hamis-api/compare/v1.0.0...v1.1.0) (2025-02-24)
+
+
+### Features
+
+* enableCors ([cf4978e](https://github.com/TeamDevRepos/tcg-hamis-api/commit/cf4978e5d71e870e5404b7440e10000e1df65e59))
+* includes rarity in add-cards ([ccebbda](https://github.com/TeamDevRepos/tcg-hamis-api/commit/ccebbda192869174fa34033b089513fd86293936))
+
 # 1.0.0 (2025-02-13)
 
 
