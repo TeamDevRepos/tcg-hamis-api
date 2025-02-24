@@ -13,6 +13,9 @@ export class Box extends Document {
     @Prop()
     set_image_url: string;
 
+    @Prop({default: 'main-box'})
+    type: string;
+
     @Prop()
     date: string;
 
