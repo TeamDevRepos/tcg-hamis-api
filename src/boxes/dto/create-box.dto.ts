@@ -18,4 +18,9 @@ export class CreateBoxDto {
   @IsString()
   @MinLength(1)
   date?: string;
+
+  @IsOptional()
+  @IsString()
+  @MinLength(1)
+  type: string;
 }
