@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/TeamDevRepos/tcg-hamis-api/compare/v1.1.2...v1.2.0) (2025-02-26)
+
+
+### Features
+
+* type in DTO boxes entity ([b8c4dc7](https://github.com/TeamDevRepos/tcg-hamis-api/commit/b8c4dc74a1ebac9e77fcd3e55a8766fdb4777529))
+
 ## [1.1.2](https://github.com/TeamDevRepos/tcg-hamis-api/compare/v1.1.1...v1.1.2) (2025-02-24)
 
 
