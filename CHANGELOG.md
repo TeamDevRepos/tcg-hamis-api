@@ -1,3 +1,10 @@
+## [1.1.2](https://github.com/TeamDevRepos/tcg-hamis-api/compare/v1.1.1...v1.1.2) (2025-02-24)
+
+
+### Bug Fixes
+
+* deleted public files ([8372e64](https://github.com/TeamDevRepos/tcg-hamis-api/commit/8372e64ab18436685890efd623f19df024d3316e))
+
 ## [1.1.1](https://github.com/TeamDevRepos/tcg-hamis-api/compare/v1.1.0...v1.1.1) (2025-02-24)
 
 
