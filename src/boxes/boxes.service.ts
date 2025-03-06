@@ -19,7 +19,7 @@ export class BoxesService {
   ) {}
 
   findAll() {
-    return this.boxModel.find().populate('cards').exec();
+    return this.boxModel.find().populate('cards').sort({ _id: -1 }).exec();
   }
 
   async findOne(id: string) {
