@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/TeamDevRepos/tcg-hamis-api/compare/v1.2.0...v1.3.0) (2025-03-06)
+
+
+### Features
+
+* authentication Module Added ([b628b3a](https://github.com/TeamDevRepos/tcg-hamis-api/commit/b628b3a5cbfec66ee201bc1709803860468c61e8))
+
 # [1.2.0](https://github.com/TeamDevRepos/tcg-hamis-api/compare/v1.1.2...v1.2.0) (2025-02-26)
 
 
