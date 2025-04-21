@@ -10,33 +10,56 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Box } from './entities/box.entity';
 import * as moment from 'moment';
+import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 
 @Injectable()
 export class BoxesService {
   constructor(
     @InjectModel(Box.name)
     private readonly boxModel: Model<Box>,
+    private readonly cloudinaryService: CloudinaryService,
   ) {}
 
   findAll() {
-    return this.boxModel.find().populate('cards').sort({ _id: -1 }).exec();
+    return this.boxModel
+      .find()
+      .select('-date -set_code')
+      .populate({
+        path: 'topCards',
+        select: 'code rarity image_url topBoxCard',
+      })
+      .sort({ _id: -1 })
+      .exec();
   }
 
   async findOne(id: string) {
-    const box = await this.boxModel.findById(id).exec();
+    const box = await this.boxModel
+      .findById(id)
+      .populate('cards')
+      .sort({ _id: -1 })
+      .exec();
     if (!box) throw new NotFoundException(`box with ID ${id} not found`);
     return box;
   }
 
-  async create(createBoxDto: CreateBoxDto) {
+  async create(createBoxDto: CreateBoxDto, file: Express.Multer.File) {
+    let uploadedImage;
+
     try {
+      uploadedImage = await this.cloudinaryService.uploadImage(file);
+
       const box = await this.boxModel.create({
         ...createBoxDto,
+        set_image_url: uploadedImage.secure_url,
         date: moment().format('l'),
       });
 
       return box;
     } catch (error) {
+      if (uploadedImage?.public_id) {
+        await this.cloudinaryService.deleteImage(uploadedImage.public_id);
+      }
+
       this.handleExceptions(error);
     }
   }

@@ -7,6 +7,7 @@ import { BoxesModule } from './boxes/boxes.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { CommonModule } from './common/common.module';
+import { CloudinaryModule } from './cloudinary/cloudinary.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { CommonModule } from './common/common.module';
     BoxesModule,
     AuthModule,
     CommonModule,
+    CloudinaryModule,
   ],
 })
 export class AppModule {}

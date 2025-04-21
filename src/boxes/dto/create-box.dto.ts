@@ -13,7 +13,7 @@ export class CreateBoxDto {
   @IsString()
   @MinLength(1)
   set_image_url?: string;
-  
+
   @IsOptional()
   @IsString()
   @MinLength(1)
