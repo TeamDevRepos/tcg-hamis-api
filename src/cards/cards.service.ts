@@ -12,6 +12,7 @@ import { Model, Schema } from 'mongoose';
 import { AddCardsDto } from './dto/add-cards.dto';
 import axios, { AxiosInstance } from 'axios';
 import { Box } from 'src/boxes/entities/box.entity';
+import { AddTopCardsDto } from './dto/add-top-cards.dto';
 
 @Injectable()
 export class CardsService {
@@ -63,35 +64,54 @@ export class CardsService {
         throw new NotFoundException('Box not found');
       }
 
-      const cardsData = await Promise.all(
-        cardCodes.map(async (code) => {
+      const cardIds: Schema.Types.ObjectId[] = [];
+
+      for (const code of cardCodes) {
+        let existingCard = await this.cardModel.findOne({ code });
+
+        if (!existingCard) {
           const { data } = await this.axios.get(
             `https://db.ygoprodeck.com/api/v7/cardinfo.php?id=${code}`,
           );
 
-          return {
+          const cardData = {
             code: data.data[0].id,
             names: [data.data[0].name],
             descs: [data.data[0].desc],
             image_url: data.data[0].card_images[0].image_url,
-            rarity
+            rarity,
           };
-        }),
-      );
 
-      const createdCards = await this.cardModel.insertMany(cardsData);
+          existingCard = await this.cardModel.create(cardData);
+        }
 
-      const cardIds = createdCards.map(
-        (card) => card._id as Schema.Types.ObjectId,
-      );
+        cardIds.push(existingCard.id);
+      }
 
       box.cards.push(...cardIds);
       await box.save();
 
-      return createdCards;
+      // Opcional: podrías devolver las cartas agregadas (existentes y nuevas)
+      const addedCards = await this.cardModel.find({ _id: { $in: cardIds } });
+
+      return addedCards;
     } catch (error) {
       this.handleExceptions(error);
     }
+  }
+
+  async addTopCards(addTopCardsDto: AddTopCardsDto) {
+    const { boxId, cardCode: code } = addTopCardsDto;
+
+    const box = await this.boxModel.findById(boxId);
+    if (!box) throw new NotFoundException('Box not found');
+
+    const card = await this.cardModel.findOne({ code });
+
+    if (!card) throw new NotFoundException(`Card with ID ${code} not found`);
+
+    box.topCards.push(card.id);
+    await box.save();
   }
 
   async update(code: number, updateCardDto: UpdateCardDto) {

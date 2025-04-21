@@ -1,7 +1,6 @@
 import {
   ArrayMinSize,
   IsArray,
-  IsBoolean,
   IsInt,
   IsOptional,
   IsPositive,
@@ -38,8 +37,4 @@ export class CreateCardDto {
   @IsString()
   @MinLength(1)
   boxId: string;
-
-  @IsOptional()
-  @IsBoolean()
-  topBoxCard?: boolean;
 }

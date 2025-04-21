@@ -1,8 +1,17 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { CardsService } from './cards.service';
 import { CreateCardDto } from './dto/create-card.dto';
 import { UpdateCardDto } from './dto/update-card.dto';
 import { AddCardsDto } from './dto/add-cards.dto';
+import { AddTopCardsDto } from './dto/add-top-cards.dto';
 
 @Controller('cards')
 export class CardsController {
@@ -16,6 +25,11 @@ export class CardsController {
   @Post('/add-cards')
   addCards(@Body() addCardsDto: AddCardsDto) {
     return this.cardsService.addCards(addCardsDto);
+  }
+
+  @Post('/add-top-cards')
+  addTopCards(@Body() addTopCardsDto: AddTopCardsDto) {
+    return this.cardsService.addTopCards(addTopCardsDto);
   }
 
   @Get()
