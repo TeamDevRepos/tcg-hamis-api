@@ -31,12 +31,20 @@ export class AuthService {
       ...createUserDto,
       password: hashedPassword,
     });
-    return newUser.save();
+
+    const user = await newUser.save();
+    const userData = user.toObject();
+    delete userData.password;
+    return {
+      user: userData,
+      token: this.getJwtToken({ _id: user.id }),
+    };
   }
 
   async login(loginUserDto: LoginUserDto) {
     const user = await this.userModel
       .findOne({ userName: loginUserDto.userName })
+      .select('-__v')
       .exec();
 
     if (!user) throw new UnauthorizedException('Credenciales invalidas');
@@ -44,11 +52,13 @@ export class AuthService {
     if (!bcrypt.compareSync(loginUserDto.password, user.password))
       throw new UnauthorizedException('Credenciales invalidas');
 
-    const { password: _, __v, ...userData } = user.toObject();
+    const userData = user.toObject();
+
+    delete userData.password;
 
     return {
       user: userData,
-      token: this.getJwtToken({ id: user.id }),
+      token: this.getJwtToken({ _id: user.id }),
     };
   }
 
@@ -67,21 +77,23 @@ export class AuthService {
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
-    const { password, ...toUpdateUser } = updateUserDto;
+    const toUpdateUser: any = { ...updateUserDto };
 
-    if (password) {
-      updateUserDto.password = bcrypt.hashSync(password, 10);
+    if (updateUserDto.password) {
+      toUpdateUser.password = bcrypt.hashSync(updateUserDto.password, 10);
     }
-    
-    const user = await this.findOne(id);
-    
+
+    const user = await this.userModel.findByIdAndUpdate(
+      id,
+      { $set: toUpdateUser },
+      { new: true },
+    );
+
     if (!user) {
       throw new NotFoundException(`Usuario con id: ${id} no encontrado`);
     }
-    await user.updateOne({ $set: updateUserDto });
-    const updatedUser = await this.findOne(id);
-    const { password: _, __v, ...userData } = updatedUser.toObject();
-    return userData;
+
+    return user.toObject();
   }
 
   async remove(id: string) {
@@ -91,6 +103,13 @@ export class AuthService {
     }
     await user.deleteOne();
     return { message: `Usuario con id: ${id} eliminado correctamente` };
+  }
+
+  async checkAuthStatus(user: User) {
+    return {
+      user,
+      token: this.getJwtToken({ _id: user._id }),
+    };
   }
 
   private getJwtToken(payload: JwtPayload) {
