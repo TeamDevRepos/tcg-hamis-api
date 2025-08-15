@@ -12,10 +12,10 @@ import { BoxesModule } from 'src/boxes/boxes.module';
     MongooseModule.forFeature([
       {
         name: Card.name,
-        schema: CardSchema
-      }
+        schema: CardSchema,
+      },
     ]),
-    BoxesModule
-  ]
+    BoxesModule,
+  ],
 })
 export class CardsModule {}

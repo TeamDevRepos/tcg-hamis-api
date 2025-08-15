@@ -12,6 +12,9 @@ export class Card extends Document {
   @Prop({ type: [String] })
   descs: string[];
 
+  @Prop()
+  frameType: string;
+
   @Prop({ default: 'N' })
   rarity?: string;
 

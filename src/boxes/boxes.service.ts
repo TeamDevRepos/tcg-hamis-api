@@ -50,7 +50,7 @@ export class BoxesService {
 
       const box = await this.boxModel.create({
         ...createBoxDto,
-        set_image_url: uploadedImage.secure_url,
+        image_url: uploadedImage.secure_url,
         date: moment().format('l'),
       });
 

@@ -4,13 +4,13 @@ import { Document, Schema as MongooseSchema } from 'mongoose';
 @Schema()
 export class Box extends Document {
   @Prop({ unique: true })
-  set_name: string;
+  name: string;
 
   @Prop()
-  set_code: string;
+  code: string;
 
   @Prop()
-  set_image_url: string;
+  image_url: string;
 
   @Prop({ default: 'main-box' })
   type: string;

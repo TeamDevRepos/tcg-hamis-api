@@ -80,6 +80,7 @@ export class CardsService {
             descs: [data.data[0].desc],
             image_url: data.data[0].card_images[0].image_url,
             rarity,
+            frameType: data.data[0].frameType,
           };
 
           existingCard = await this.cardModel.create(cardData);
@@ -111,6 +112,25 @@ export class CardsService {
     if (!card) throw new NotFoundException(`Card with ID ${code} not found`);
 
     box.topCards.push(card.id);
+    await box.save();
+  }
+
+  async removeTopCard(addTopCardsDto: AddTopCardsDto) {
+    const { boxId, cardCode } = addTopCardsDto;
+
+    const box = await this.boxModel.findById(boxId);
+    if (!box) throw new NotFoundException('Box not found');
+
+    const card = await this.cardModel.findOne({ code: cardCode });
+    if (!card)
+      throw new NotFoundException(`Card with code ${cardCode} not found`);
+
+    const index = box.topCards.indexOf(card.id);
+    if (index === -1) {
+      throw new BadRequestException('Card is not in the topCards list');
+    }
+
+    box.topCards.splice(index, 1);
     await box.save();
   }
 

@@ -30,6 +30,11 @@ export class CreateCardDto {
   @MinLength(1)
   rarity?: string;
 
+  @IsOptional()
+  @IsString()
+  @MinLength(1)
+  frameType?: string;
+
   @IsString()
   @MinLength(1)
   image_url: string;

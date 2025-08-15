@@ -32,6 +32,11 @@ export class CardsController {
     return this.cardsService.addTopCards(addTopCardsDto);
   }
 
+  @Post('/remove-top-cards')
+  removeTopCards(@Body() addTopCardsDto: AddTopCardsDto) {
+    return this.cardsService.removeTopCard(addTopCardsDto);
+  }
+
   @Get()
   findAll() {
     return this.cardsService.findAll();
